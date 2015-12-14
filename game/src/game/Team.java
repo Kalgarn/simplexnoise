@@ -5,10 +5,10 @@ public class Team
 
 	public enum Border {TOP, RIGHT, BOTTOM, LEFT}
 	
-	private java.awt.Color color;
+	private Color color;
 	private Border border;
 	
-	public Team(final java.awt.Color color, final Border border)
+	public Team(final Color color, final Border border)
 	{
 		this.color = color;
 		this.border = border;
@@ -19,7 +19,7 @@ public class Team
 		return border;
 	}
 	
-	public java.awt.Color getColor()
+	public Color getColor()
 	{
 		return color;
 	}

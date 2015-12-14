@@ -3,18 +3,18 @@ package game;
 public class Game 
 {
 	private game.mapping.Map map;
-	private final java.util.List<Team> teams = new java.util.ArrayList<Team>();
-	private final java.util.Map<Team,java.awt.Point[]> spawns = new java.util.Hashtable<Team,java.awt.Point[]>();
+	private final List<Team> teams = new java.util.ArrayList<Team>();
+	private final Map<Team,java.awt.Point[]> spawns = new java.util.Hashtable<Team,java.awt.Point[]>();
 	public int spawnSize = 4;
 	public int mapWidth = 41;
 	public int mapHeight = 21;
 	
 	public Game()
 	{
-		teams.add(new Team(java.awt.Color.RED, Team.Border.LEFT));
-		teams.add(new Team(java.awt.Color.CYAN, Team.Border.RIGHT));
-		teams.add(new Team(java.awt.Color.YELLOW, Team.Border.TOP));
-		teams.add(new Team(java.awt.Color.GREEN, Team.Border.BOTTOM));
+		teams.add(new Team(Color.RED, Team.Border.LEFT));
+		teams.add(new Team(Color.CYAN, Team.Border.RIGHT));
+		teams.add(new Team(Color.YELLOW, Team.Border.TOP));
+		teams.add(new Team(Color.GREEN, Team.Border.BOTTOM));
 		
 		reset();
 	}
@@ -31,11 +31,11 @@ public class Game
 				continue;
 			}
 			
-			final java.util.List<java.awt.Point> occupied = new java.util.ArrayList<java.awt.Point>();
+			final List<java.awt.Point> occupied = new ArrayList<java.awt.Point>();
 			
 			for (int n=0; n<teams.size(); n++)
 			{
-				final java.awt.Point[] spawns = randomSpawns(spawnSize, teams.get(n), occupied);
+				final Point[] spawns = randomSpawns(spawnSize, teams.get(n), occupied);
 				
 				if (spawns.length == 0)
 				{

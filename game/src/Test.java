@@ -7,14 +7,14 @@ public class Test
 {	
 	public static void main(final String[] arguments)
 	{
-		final javax.swing.JFrame f = new javax.swing.JFrame();
+		final JFrame f = new JFrame();
 		
 		final MapView view = new MapView(new Game());
-		f.addKeyListener(new java.awt.event.KeyAdapter()
+		f.addKeyListener(new event.KeyAdapter()
 		{
-			public void keyPressed(final java.awt.event.KeyEvent event)
+			public void keyPressed(final event.KeyEvent event)
 			{
-				if (event.getKeyCode() == java.awt.event.KeyEvent.VK_F5)
+				if (event.getKeyCode() == event.KeyEvent.VK_F5)
 				{
 					view.setGame(new Game());
 				}
@@ -22,10 +22,10 @@ public class Test
 		});
 		
 		
-		f.setContentPane(new javax.swing.JScrollPane(view));
+		f.setContentPane(new JScrollPane(view));
 		f.pack();
 		f.setLocationRelativeTo(null);
-		f.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
 		
 	}
