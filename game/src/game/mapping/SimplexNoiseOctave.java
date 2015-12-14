@@ -1,14 +1,26 @@
 package game.mapping;
 
+import java.util.Random;
+
+	// simplex -> triangle
+
 public class SimplexNoiseOctave 
 {
 	public static int RANDOMSEED = 0;
 	
 	private static final int NUMBEROFSWAPS = 400;  
+//////
+//La table des vecteurs :
+//
+//Elle contient les gradients de couleur que nous allons associer à chaque point de l'espace.
 	private static final Grad grad3[] =  {new Grad(1,1,0),new Grad(-1,1,0),new Grad(1,-1,0),new Grad(-1,-1,0),
 									new Grad(1,0,1),new Grad(-1,0,1),new Grad(1,0,-1),new Grad(-1,0,-1),
 									new Grad(0,1,1),new Grad(0,-1,1),new Grad(0,1,-1),new Grad(0,-1,-1)};
-		
+//////
+//La table de permutation :
+//
+//Elle associe à chaque valeur comprise entre 0 et 256 une unique valeur elle aussi comprise entre 0 et 256. C'est une permutation.
+//Afin d'éviter des opérations de modulo, dans le souci d'accroître la vitesse de calcul, elle est définie de 0 à 512.	
 	private static final short p_supply[] =  {151,160,137,91,90,15,
 										131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,8,99,37,240,21,10,23,
 										190, 6,148,247,120,234,75,0,26,197,62,94,252,219,203,117,35,11,32,57,177,33,
@@ -44,11 +56,11 @@ public class SimplexNoiseOctave
 		
 		if (seed == RANDOMSEED)
 		{
-			final java.util.Random rand = new java.util.Random();
+			final Random rand = new Random();
 			seed = rand.nextInt();
 		}
 		
-		final java.util.Random rand = new java.util.Random(seed);
+		final Random rand = new Random(seed);
 		
 		int swapFrom, swapTo;
 		short temp;

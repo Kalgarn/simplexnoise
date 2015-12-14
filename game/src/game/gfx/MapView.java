@@ -1,13 +1,24 @@
 package game.gfx;
 
+import game.Game;
+import game.mapping.Region;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseWheelEvent;
+
 public class MapView extends javax.swing.JComponent
 {
 	private static final long serialVersionUID = 1L;
 	
-	public static int tileSize = 32;
-	public static int spawnSize = 24;
+	public static int tileSize = 43; // taille des tuiles
+	public static int spawnSize = 22; // taille des blocs équipe
 	
-	public static final double DEFAULT_SCALE = .5;
+	public static final double DEFAULT_SCALE = .5; // échelle de la map      inetervale
 	public static final double MIN_SCALE = 0.125;
 	public static final double MAX_SCALE = 16.0;
 	
@@ -15,20 +26,20 @@ public class MapView extends javax.swing.JComponent
 
 	public enum Orientation {FLAT, POINTY}
 	
-	public boolean showGrid;
-	public boolean showSpawns = true;
-	public boolean showRegions = true;
+	public boolean showGrid = false;  // affiche/cache un quadrillage
+	public boolean showSpawns = true;  //  affiche/cache les équipes
+	public boolean showRegions = true; //  affiche/suprime le contours des regions
 	
 	private int zoomedTileSize;
-	private game.Game game;
+	private Game game;
 	
-	public MapView(final game.Game game)
+	public MapView(final Game game)
 	{
 		setGame(game);
 		
-		addMouseWheelListener(new java.awt.event.MouseAdapter()
+		addMouseWheelListener(new MouseAdapter()
 		{
-			public void mouseWheelMoved(final java.awt.event.MouseWheelEvent event)
+			public void mouseWheelMoved(final MouseWheelEvent event)
 			{
 				if (game != null)
 				{
@@ -56,7 +67,7 @@ public class MapView extends javax.swing.JComponent
 		{
 			scale = newScale;
 			zoomedTileSize = (int)(tileSize * scale);
-			setPreferredSize(new java.awt.Dimension(game.getMap().getWidth() * zoomedTileSize, game.getMap().getHeight() * zoomedTileSize));
+			setPreferredSize(new Dimension(game.getMap().getWidth() * zoomedTileSize, game.getMap().getHeight() * zoomedTileSize));
 		}
 	}
 	
@@ -69,7 +80,7 @@ public class MapView extends javax.swing.JComponent
 		{
 			scale = newScale;
 			zoomedTileSize = (int)(tileSize * scale);
-			setPreferredSize(new java.awt.Dimension(game.getMap().getWidth() * zoomedTileSize, game.getMap().getHeight() * zoomedTileSize));
+			setPreferredSize(new Dimension(game.getMap().getWidth() * zoomedTileSize, game.getMap().getHeight() * zoomedTileSize));
 		}
 	}
 	
@@ -79,11 +90,11 @@ public class MapView extends javax.swing.JComponent
 		{
 			scale = DEFAULT_SCALE;
 			zoomedTileSize = (int)(tileSize * scale);
-			setPreferredSize(new java.awt.Dimension(game.getMap().getWidth() * zoomedTileSize, game.getMap().getHeight() * zoomedTileSize));
+			setPreferredSize(new Dimension(game.getMap().getWidth() * zoomedTileSize, game.getMap().getHeight() * zoomedTileSize));
 		}
 	}
 	
-	public void setGame(final game.Game game)
+	public void setGame(final Game game)
 	{
 		this.game = game;
 		resetZoom();
@@ -105,11 +116,11 @@ public class MapView extends javax.swing.JComponent
 		graphics.fillRect(x, y, width, height);
 	}
 	
-	public void paintComponent(final java.awt.Graphics graphics)
+	public void paintComponent(final Graphics graphics)
 	{
 		super.paintComponent(graphics);
 		
-		final game.mapping.Region[] regions = game.getMap().getRegions();
+		final Region[] regions = game.getMap().getRegions();
 		for (int n = 0; n < regions.length; n++)
 		{
 			paintRegion(graphics, regions[n]);
@@ -117,13 +128,13 @@ public class MapView extends javax.swing.JComponent
 		
 		if (showGrid)
 		{
-			java.awt.Color c;
+			Color c;
 			for (int y = 0; y < game.getMap().getHeight(); y++)
 			{
 				for (int x = 0; x < game.getMap().getWidth(); x++)
 				{
 					c = game.getMap().getBiomeAt(x, y).getColor();
-					graphics.setColor(new java.awt.Color(255-c.getRed(), 255-c.getGreen(), 255-c.getBlue()));
+					graphics.setColor(new Color(255-c.getRed(), 255-c.getGreen(), 255-c.getBlue()));
 					graphics.drawRect(x * zoomedTileSize(), y * zoomedTileSize(), zoomedTileSize()-1, zoomedTileSize()-1);
 				}
 			}
@@ -140,8 +151,8 @@ public class MapView extends javax.swing.JComponent
 		if (showSpawns)
 		{
 			game.Team[] teams = game.getTeams();
-			java.awt.Color color;
-			java.awt.Point[] spawns;
+			Color color;
+			Point[] spawns;
 	
 			for (int n=0; n <teams.length; n++)
 			{
@@ -157,10 +168,10 @@ public class MapView extends javax.swing.JComponent
 		}
 	}
 	
-	protected void paintRegion(final java.awt.Graphics g, final game.mapping.Region region)
+	protected void paintRegion(final Graphics g, final Region region)
 	{
 		g.setColor(region.getBiome().getColor());
-		final java.awt.Rectangle b = region.getBounds();
+		final Rectangle b = region.getBounds();
 		for (int y = 0; y < b.height; y++)
 		{
 			for (int x = 0; x < b.width; x++)
@@ -173,10 +184,10 @@ public class MapView extends javax.swing.JComponent
 		}
 	}
 	
-	protected void paintRegionBorders(final java.awt.Graphics g, final game.mapping.Region region)
+	protected void paintRegionBorders(final Graphics g, final Region region)
 	{
-		g.setColor(java.awt.Color.BLACK);
-		final java.awt.Rectangle b = region.getBounds();
+		g.setColor(Color.BLACK);
+		final Rectangle b = region.getBounds();
 
 		boolean showTop, showBottom, showLeft, showRight;
 		int x1, y1, x2, y2;
@@ -208,7 +219,7 @@ public class MapView extends javax.swing.JComponent
 		}
 	}
 	
-	protected void paintSpawnPoint(final java.awt.Graphics g, final java.awt.Point p, final java.awt.Color c)
+	protected void paintSpawnPoint(final Graphics g, final Point p, final Color c)
 	{
 		g.setColor(c);
 		final int zss = (int)(spawnSize * scale);

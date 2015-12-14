@@ -1,22 +1,32 @@
 package game;
 
+import java.awt.Color;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
 public class Game 
 {
 	private game.mapping.Map map;
-	private final List<Team> teams = new java.util.ArrayList<Team>();
-	private final Map<Team,java.awt.Point[]> spawns = new java.util.Hashtable<Team,java.awt.Point[]>();
-	public int spawnSize = 4;
-	public int mapWidth = 41;
-	public int mapHeight = 21;
+	private final List<Team> teams = new ArrayList<Team>();
+	private final Map<Team,Point[]> spawns = new Hashtable<Team,Point[]>();
+	public int spawnSize = 1; //nb de blocs de l'équipe. ex: 2 sur 2
+	public int mapWidth = 41; // largeur de la carte
+	public int mapHeight = 21; // hauteur
 	
-	public Game()
-	{
+	public Game() // appeller pour générer la map
+	{				// couleur et emplacement des équipes
 		teams.add(new Team(Color.RED, Team.Border.LEFT));
 		teams.add(new Team(Color.CYAN, Team.Border.RIGHT));
 		teams.add(new Team(Color.YELLOW, Team.Border.TOP));
 		teams.add(new Team(Color.GREEN, Team.Border.BOTTOM));
 		
-		reset();
+		reset(); // genere la map
 	}
 	
 	public void reset()
@@ -31,7 +41,7 @@ public class Game
 				continue;
 			}
 			
-			final List<java.awt.Point> occupied = new ArrayList<java.awt.Point>();
+			final List<Point> occupied = new ArrayList<Point>();
 			
 			for (int n=0; n<teams.size(); n++)
 			{
@@ -43,7 +53,7 @@ public class Game
 					continue;
 				}
 				
-				occupied.addAll(java.util.Arrays.asList(spawns));
+				occupied.addAll(Arrays.asList(spawns));
 
 				this.spawns.put(teams.get(n), spawns);
 			}
@@ -58,7 +68,7 @@ public class Game
 		return map;
 	}
 	
-	public java.awt.Point[] getSpawns(final Team team)
+	public Point[] getSpawns(final Team team)
 	{
 		return spawns.get(team);
 	}
@@ -98,7 +108,7 @@ public class Game
 		return true;
 	}
 	
-	private java.awt.Point[] randomSpawns(final int spawnSize, final Team team, final java.util.List<java.awt.Point> exclusions)
+	private Point[] randomSpawns(final int spawnSize, final Team team, final List<Point> exclusions)
 	{
 		switch (team.getBorder())
 		{
@@ -115,10 +125,10 @@ public class Game
 		}
 	}
 	
-	private java.awt.Point[] randomTopSpawns(final int spawnSize, final java.util.List<java.awt.Point> exclusions)
+	private Point[] randomTopSpawns(final int spawnSize, final List<Point> exclusions)
 	{
-		final boolean dir = new java.util.Random().nextBoolean();
-		java.awt.Rectangle r;
+		final boolean dir = new Random().nextBoolean();
+		Rectangle r;
 		
 		for (int y = 0; y < map.getHeight(); y++)
 		{
@@ -126,14 +136,14 @@ public class Game
 			{
 				if (dir)
 				{
-					r = new java.awt.Rectangle(map.getWidth()/2 + n, y, spawnSize, spawnSize);
+					r = new Rectangle(map.getWidth()/2 + n, y, spawnSize, spawnSize);
 				}
 				else
 				{
-					r = new java.awt.Rectangle(map.getWidth()/2 - n, y, spawnSize, spawnSize);
+					r = new Rectangle(map.getWidth()/2 - n, y, spawnSize, spawnSize);
 				}
 				
-				if (new java.awt.Rectangle(0, 0, map.getWidth(), map.getHeight()).contains(r))
+				if (new Rectangle(0, 0, map.getWidth(), map.getHeight()).contains(r))
 				{
 					if (!rectangleContainsObstacles(r, exclusions))
 					{
@@ -143,14 +153,14 @@ public class Game
 				
 				if (dir)
 				{
-					r = new java.awt.Rectangle(map.getWidth()/2 - n, y, spawnSize, spawnSize);
+					r = new Rectangle(map.getWidth()/2 - n, y, spawnSize, spawnSize);
 				}
 				else
 				{
-					r = new java.awt.Rectangle(map.getWidth()/2 + n, y, spawnSize, spawnSize);
+					r = new Rectangle(map.getWidth()/2 + n, y, spawnSize, spawnSize);
 				}
 				
-				if (new java.awt.Rectangle(0, 0, map.getWidth(), map.getHeight()).contains(r))
+				if (new Rectangle(0, 0, map.getWidth(), map.getHeight()).contains(r))
 				{
 					if (!rectangleContainsObstacles(r, exclusions))
 					{
@@ -162,10 +172,10 @@ public class Game
 		return null;
 	}
 	
-	private java.awt.Point[] randomBottomSpawns(final int spawnSize, final java.util.List<java.awt.Point> exclusions)
+	private Point[] randomBottomSpawns(final int spawnSize, final List<java.awt.Point> exclusions)
 	{
-		final boolean dir = new java.util.Random().nextBoolean();
-		java.awt.Rectangle r;
+		final boolean dir = new Random().nextBoolean();
+		Rectangle r;
 		
 		for (int y = map.getHeight(); y >= 0; y--)
 		{
@@ -173,14 +183,14 @@ public class Game
 			{
 				if (dir)
 				{
-					r = new java.awt.Rectangle(map.getWidth()/2 + n, y, spawnSize, spawnSize);
+					r = new Rectangle(map.getWidth()/2 + n, y, spawnSize, spawnSize);
 				}
 				else
 				{
-					r = new java.awt.Rectangle(map.getWidth()/2 - n, y, spawnSize, spawnSize);
+					r = new Rectangle(map.getWidth()/2 - n, y, spawnSize, spawnSize);
 				}
 				
-				if (new java.awt.Rectangle(0, 0, map.getWidth(), map.getHeight()).contains(r))
+				if (new Rectangle(0, 0, map.getWidth(), map.getHeight()).contains(r))
 				{
 					if (!rectangleContainsObstacles(r, exclusions))
 					{
@@ -190,14 +200,14 @@ public class Game
 				
 				if (dir)
 				{
-					r = new java.awt.Rectangle(map.getWidth()/2 - n, y, spawnSize, spawnSize);
+					r = new Rectangle(map.getWidth()/2 - n, y, spawnSize, spawnSize);
 				}
 				else
 				{
-					r = new java.awt.Rectangle(map.getWidth()/2 + n, y, spawnSize, spawnSize);
+					r = new Rectangle(map.getWidth()/2 + n, y, spawnSize, spawnSize);
 				}
 				
-				if (new java.awt.Rectangle(0, 0, map.getWidth(), map.getHeight()).contains(r))
+				if (new Rectangle(0, 0, map.getWidth(), map.getHeight()).contains(r))
 				{
 					if (!rectangleContainsObstacles(r, exclusions))
 					{
@@ -209,10 +219,10 @@ public class Game
 		return null;
 	}
 	
-	private java.awt.Point[] randomLeftSpawns(final int spawnSize, final java.util.List<java.awt.Point> exclusions)
+	private Point[] randomLeftSpawns(final int spawnSize, final List<java.awt.Point> exclusions)
 	{
-		final boolean dir = new java.util.Random().nextBoolean();
-		java.awt.Rectangle r;
+		final boolean dir = new Random().nextBoolean();
+		Rectangle r;
 		
 		for (int x = 0; x < map.getWidth(); x++)
 		{
@@ -220,14 +230,14 @@ public class Game
 			{
 				if (dir)
 				{
-					r = new java.awt.Rectangle(x, map.getHeight()/2 + n, spawnSize, spawnSize);
+					r = new Rectangle(x, map.getHeight()/2 + n, spawnSize, spawnSize);
 				}
 				else
 				{
-					r = new java.awt.Rectangle(x, map.getHeight()/2 - n, spawnSize, spawnSize);
+					r = new Rectangle(x, map.getHeight()/2 - n, spawnSize, spawnSize);
 				}
 				
-				if (new java.awt.Rectangle(0, 0, map.getWidth(), map.getHeight()).contains(r))
+				if (new Rectangle(0, 0, map.getWidth(), map.getHeight()).contains(r))
 				{
 					if (!rectangleContainsObstacles(r, exclusions))
 					{
@@ -237,14 +247,14 @@ public class Game
 				
 				if (dir)
 				{
-					r = new java.awt.Rectangle(x, map.getHeight()/2 - n, spawnSize, spawnSize);
+					r = new Rectangle(x, map.getHeight()/2 - n, spawnSize, spawnSize);
 				}
 				else
 				{
-					r = new java.awt.Rectangle(x, map.getHeight()/2 + n, spawnSize, spawnSize);
+					r = new Rectangle(x, map.getHeight()/2 + n, spawnSize, spawnSize);
 				}
 				
-				if (new java.awt.Rectangle(0, 0, map.getWidth(), map.getHeight()).contains(r))
+				if (new Rectangle(0, 0, map.getWidth(), map.getHeight()).contains(r))
 				{
 					if (!rectangleContainsObstacles(r, exclusions))
 					{
@@ -256,10 +266,10 @@ public class Game
 		return null;
 	}
 	
-	private java.awt.Point[] randomRightSpawns(final int spawnSize, final java.util.List<java.awt.Point> exclusions)
+	private Point[] randomRightSpawns(final int spawnSize, final List<java.awt.Point> exclusions)
 	{
-		final boolean dir = new java.util.Random().nextBoolean();
-		java.awt.Rectangle r;
+		final boolean dir = new Random().nextBoolean();
+		Rectangle r;
 		
 		for (int x = map.getWidth(); x >= 0; x--)
 		{
@@ -267,14 +277,14 @@ public class Game
 			{
 				if (dir)
 				{
-					r = new java.awt.Rectangle(x, map.getHeight()/2 + n, spawnSize, spawnSize);
+					r = new Rectangle(x, map.getHeight()/2 + n, spawnSize, spawnSize);
 				}
 				else
 				{
-					r = new java.awt.Rectangle(x, map.getHeight()/2 - n, spawnSize, spawnSize);
+					r = new Rectangle(x, map.getHeight()/2 - n, spawnSize, spawnSize);
 				}
 				
-				if (new java.awt.Rectangle(0, 0, map.getWidth(), map.getHeight()).contains(r))
+				if (new Rectangle(0, 0, map.getWidth(), map.getHeight()).contains(r))
 				{
 					if (!rectangleContainsObstacles(r, exclusions))
 					{
@@ -284,14 +294,14 @@ public class Game
 				
 				if (dir)
 				{
-					r = new java.awt.Rectangle(x, map.getHeight()/2 - n, spawnSize, spawnSize);
+					r = new Rectangle(x, map.getHeight()/2 - n, spawnSize, spawnSize);
 				}
 				else
 				{
-					r = new java.awt.Rectangle(x, map.getHeight()/2 + n, spawnSize, spawnSize);
+					r = new Rectangle(x, map.getHeight()/2 + n, spawnSize, spawnSize);
 				}
 				
-				if (new java.awt.Rectangle(0, 0, map.getWidth(), map.getHeight()).contains(r))
+				if (new Rectangle(0, 0, map.getWidth(), map.getHeight()).contains(r))
 				{
 					if (!rectangleContainsObstacles(r, exclusions))
 					{
@@ -303,22 +313,22 @@ public class Game
 		return null;
 	}
 		
-	private java.awt.Point[] rectangleToPoints(final java.awt.Rectangle r)
+	private Point[] rectangleToPoints(final Rectangle r)
 	{
-		final java.util.List<java.awt.Point> points = new java.util.ArrayList<java.awt.Point>();
+		final List<Point> points = new ArrayList<Point>();
 		for (int y=r.y; y < r.y + r.height; y++)
 		{
 			for (int x=r.x; x < r.x + r.width; x++)
 			{
-				points.add(new java.awt.Point(x,y));
+				points.add(new Point(x,y));
 			}
 		}
-		return (java.awt.Point[]) points.toArray(new java.awt.Point[0]);
+		return (Point[]) points.toArray(new Point[0]);
 	}
 	
-	private boolean rectangleContainsObstacles(final java.awt.Rectangle r, final java.util.List<java.awt.Point> exclusions)
+	private boolean rectangleContainsObstacles(final Rectangle r, final List<Point> exclusions)
 	{
-		final java.awt.Point[] points = rectangleToPoints(r);
+		final Point[] points = rectangleToPoints(r);
 		for (int i=0; i<points.length; i++)
 		{
 			if (!map.getBiomeAt(points[i].x, points[i].y).isTraversable())

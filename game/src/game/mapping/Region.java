@@ -1,9 +1,14 @@
 package game.mapping;
 
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Region 
 {
 	private Biome biome;
-	private java.util.List<java.awt.Point> points = new java.util.ArrayList<java.awt.Point>();
+	private List<Point> points = new ArrayList<Point>();
 	private int minx = Integer.MAX_VALUE;
 	private int maxx = Integer.MIN_VALUE;
 	private int miny = Integer.MAX_VALUE;
@@ -26,7 +31,7 @@ public class Region
 	
 	public void add(final int x, final int y)
 	{
-		final java.awt.Point p = new java.awt.Point(x, y);
+		final Point p = new Point(x, y);
 		if (!points.contains(p))
 		{
 			if (x < minx) minx = x;
@@ -37,18 +42,18 @@ public class Region
 		}	
 	}
 	
-	public java.awt.Rectangle getBounds()
+	public Rectangle getBounds()
 	{
-		return new java.awt.Rectangle(minx, miny, maxx-minx+1, maxy-miny+1);
+		return new Rectangle(minx, miny, maxx-minx+1, maxy-miny+1);
 	}
 	
-	public boolean contains(final java.awt.Point p)
+	public boolean contains(final Point p)
 	{
 		return contains(p.x, p.y);
 	}
 	
 	public boolean contains(final int x, final int y)
 	{
-		return points.contains(new java.awt.Point(x,y));
+		return points.contains(new Point(x,y));
 	}
 }

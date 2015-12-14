@@ -1,5 +1,7 @@
 package game.mapping;
 
+import java.util.Random;
+
 public class SimplexNoise
 {
 	SimplexNoiseOctave[] octaves;
@@ -15,7 +17,7 @@ public class SimplexNoise
 		frequencys = new double[octaves];
 		amplitudes = new double[octaves];
 
-        final java.util.Random rnd = new java.util.Random(seed);
+        final Random rnd = new Random(seed);
 
         for(int i=0;i<octaves;i++)
         {

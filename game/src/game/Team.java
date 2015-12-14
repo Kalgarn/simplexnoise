@@ -1,11 +1,13 @@
 package game;
 
+import java.awt.Color;
+
 public class Team 
 {
 
 	public enum Border {TOP, RIGHT, BOTTOM, LEFT}
 	
-	private Color color;
+	private java.awt.Color color;
 	private Border border;
 	
 	public Team(final Color color, final Border border)

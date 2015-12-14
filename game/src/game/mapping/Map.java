@@ -1,5 +1,10 @@
 package game.mapping;
 
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class Map 
 {
 	private int width;
@@ -20,7 +25,7 @@ public class Map
 	
 	public Biome getBiomeAt(final int x, final int y)
 	{
-		final java.awt.Point p = new java.awt.Point(x, y);
+		final Point p = new Point(x, y);
 		for (int i=0; i<regions.length; i++)
 		{
 			if (regions[i].contains(p)) return regions[i].getBiome();
@@ -45,7 +50,7 @@ public class Map
 		
 		int octaves = 8;
 		double persistence = .4;
-		int seed = new java.util.Random().nextInt();
+		int seed = new Random().nextInt();
 		
 		final SimplexNoise simplexNoise1 = new SimplexNoise(octaves, persistence, seed);
 		final SimplexNoise simplexNoise2 = new SimplexNoise(octaves, persistence, seed);
@@ -132,7 +137,7 @@ public class Map
 	
 	private Region[] calcRegions(final Biome[][] grid)
 	{
-		final java.util.List<Region> regions = new java.util.ArrayList<Region>();
+		final List<Region> regions = new ArrayList<Region>();
 		Region region;
 
 		for (int y = 0; y < grid[0].length; y++)
